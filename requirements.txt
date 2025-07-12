@@ -1,4 +1,4 @@
 streamlit
 pandas
 openpyxl
-import matplotlib.pyplot as plt
+matplotlib
