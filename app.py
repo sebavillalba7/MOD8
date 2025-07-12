@@ -5,16 +5,10 @@ import matplotlib.pyplot as plt
 # --- CONFIGURACIÓN DE TEMA (DARK + PERSONALIZADO) ---
 st.set_page_config(page_title="LESIONES DEPORTIVAS", page_icon="💪", layout="wide")
 
-# CSS general: fondo y colores
+# --- CSS Personalizado para tabla y fondo ---
 custom_css = """
 <style>
-body, .stApp {
-    background-color: #102542;
-    color: #fff !important;
-}
-.st-emotion-cache-1v0mbdj, .st-emotion-cache-6qob1r { /* Sidebar background */
-    background-color: #06101f !important;
-}
+body, .stApp {background-color: #102542 !important;}
 thead tr th {
     background-color: #102542 !important;
     color: #fff !important;
@@ -23,13 +17,12 @@ thead tr th {
 }
 tbody tr td {
     color: #fff !important;
-}
-.dataframe {
-    background-color: #102542 !important;
+    text-align: center !important;
 }
 .stDataFrame div[role="table"] {background: #102542 !important;}
 .stDataFrame {color: #fff !important;}
-/* Estilo selectbox sidebar */
+/* Sidebar y selectbox */
+.st-emotion-cache-1v0mbdj, .st-emotion-cache-6qob1r {background-color: #06101f !important;}
 .st-emotion-cache-16idsys {color: #fff !important; font-weight: bold;}
 </style>
 """
@@ -53,21 +46,29 @@ df['FECHA'] = pd.to_datetime(df['FECHA'], errors='coerce')
 df['AÑO'] = df['FECHA'].dt.year
 df['MES'] = df['FECHA'].dt.month
 
-# --- SIDEBAR PERSONALIZADO ---
+# --- SIDEBAR con MULTISELECT ---
 with st.sidebar:
-    st.markdown("<br>", unsafe_allow_html=True)
-    st.markdown("<div style='text-align:center; font-size:2.2em;'>🟥</div>", unsafe_allow_html=True)  # Icono cruz roja para lesiones
-    st.markdown("<h3 style='text-align:center; color:red; font-weight:bold;'>FILTRAR AÑO</h3>", unsafe_allow_html=True)
+    st.markdown("<div style='text-align:center; font-size:2.2em;'>🟥</div>", unsafe_allow_html=True)
+    st.markdown("<h3 style='text-align:center; color:#fff; font-weight:bold;'>FILTRAR AÑO</h3>", unsafe_allow_html=True)
     anios = sorted(df['AÑO'].dropna().unique())
-    anio = st.selectbox("Selecciona un año", anios, index=len(anios)-1, key="anio_selector")  # Último año por defecto
+    anios_seleccionados = st.multiselect(
+        "Selecciona uno o varios años",
+        anios,
+        default=anios[::-1]  # Todos seleccionados por defecto
+    )
 
 # --- FILTRO POR AÑO ---
-df_filtro = df[df['AÑO'] == anio]
+df_filtro = df[df['AÑO'].isin(anios_seleccionados)]
+
+# --- TITULO DE LA TABLA ---
+st.markdown(
+    "<h3 style='text-align:center; text-transform:uppercase;'><span style='font-size:1.4em;'>🗂️</span> Tabla de lesiones</h3>",
+    unsafe_allow_html=True
+)
 
 # --- TABLA PERSONALIZADA ---
-st.markdown(f"<h3 style='margin-top:30px;'>Tabla de lesiones en {anio}</h3>", unsafe_allow_html=True)
-# Personalización por CSS para colores (ya incluido arriba), los datos y títulos son blancos
-st.dataframe(df_filtro.head(100), use_container_width=True)
+st.dataframe(df_filtro, use_container_width=True)
+
 
 # --- GRAFICO DE BARRAS: Top 10 músculos ---
 st.markdown(
