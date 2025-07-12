@@ -28,7 +28,7 @@ st.title("Dashboard de Lesiones Deportivas")
 st.markdown("Filtrado y análisis de lesiones musculares")
 
 # --- LECTURA DE DATOS ---
-df = pd.read_excel("db_completo_2.xlsx")
+df = pd.read_excel("LESIONES_LONG.xlsx")
 
 # --- PROCESAMIENTO DE FECHAS Y AÑOS ---
 df['FECHA'] = pd.to_datetime(df['FECHA'], errors='coerce')
