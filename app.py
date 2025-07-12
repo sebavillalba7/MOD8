@@ -57,7 +57,7 @@ df['MES'] = df['FECHA'].dt.month
 with st.sidebar:
     st.markdown("<br>", unsafe_allow_html=True)
     st.markdown("<div style='text-align:center; font-size:2.2em;'>🟥</div>", unsafe_allow_html=True)  # Icono cruz roja para lesiones
-    st.markdown("<h3 style='text-align:center; color:#fff; font-weight:bold;'>FILTRAR AÑO</h3>", unsafe_allow_html=True)
+    st.markdown("<h3 style='text-align:center; color:red; font-weight:bold;'>FILTRAR AÑO</h3>", unsafe_allow_html=True)
     anios = sorted(df['AÑO'].dropna().unique())
     anio = st.selectbox("Selecciona un año", anios, index=len(anios)-1, key="anio_selector")  # Último año por defecto
 
