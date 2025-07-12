@@ -33,10 +33,10 @@ col1, col2 = st.columns([1, 7])
 with col1:
     st.image("logo.png", width=90)  # Logo más pequeño (AJUSTA AQUÍ el tamaño)
 with col2:
-    st.markdown("<h1 style='text-align: right; letter-spacing:2px; font-size:2.5rem;'>DASHBOARD DE LESIONES DEPORTIVAS</h1>", unsafe_allow_html=True)  # Título a la derecha y en mayúsculas
+    st.markdown("<h1 style='text-align: right;color:#fff; letter-spacing:2px; font-size:2.5rem;'>DASHBOARD DE LESIONES DEPORTIVAS</h1>", unsafe_allow_html=True)  # Título a la derecha y en mayúsculas
 
 # --- SUBTITULO ---
-st.markdown("<h4 style='text-align:right;'>Mag. SEBASTIAN VILLALBA</h4>", unsafe_allow_html=True)  # Subtítulo debajo del título
+st.markdown("<h4 style='text-align:right;color:#fff; '>Mag. SEBASTIAN VILLALBA</h4>", unsafe_allow_html=True)  # Subtítulo debajo del título
 
 # --- LECTURA DE DATOS ---
 df = pd.read_excel("LESIONES_LONG.xlsx")
@@ -49,7 +49,7 @@ df['MES'] = df['FECHA'].dt.month
 # --- SIDEBAR con MULTISELECT ---
 with st.sidebar:
     st.markdown("<div style='text-align:center; font-size:2.2em;'>🟥</div>", unsafe_allow_html=True)
-    st.markdown("<h3 style='text-align:center; color:#fff; font-weight:bold;'>FILTRAR AÑO</h3>", unsafe_allow_html=True)
+    st.markdown("<h3 style='text-align:center; color:red; font-weight:bold;'>FILTRAR AÑO</h3>", unsafe_allow_html=True)
     anios = sorted(df['AÑO'].dropna().unique())
     anios_seleccionados = st.multiselect(
         "Selecciona uno o varios años",
@@ -62,7 +62,7 @@ df_filtro = df[df['AÑO'].isin(anios_seleccionados)]
 
 # --- TITULO DE LA TABLA ---
 st.markdown(
-    "<h3 style='text-align:center; text-transform:uppercase;'><span style='font-size:1.4em;'>🗂️</span> Tabla de lesiones</h3>",
+    "<h3 style='text-align:center;color:#fff;  text-transform:uppercase;'><span style='font-size:1.4em;'>🗂️</span> Tabla de lesiones</h3>",
     unsafe_allow_html=True
 )
 
@@ -72,7 +72,7 @@ st.dataframe(df_filtro, use_container_width=True)
 
 # --- GRAFICO DE BARRAS: Top 10 músculos ---
 st.markdown(
-    "<h3 style='text-align:center; text-decoration:underline;'>⚽️ TOP 10 LESIONES POR MÚSCULO</h3>",
+    "<h3 style='text-align:center;color:#fff;'>⚽️ TOP 10 LESIONES POR MÚSCULO</h3>",
     unsafe_allow_html=True
 )
 lesiones_musc = df_filtro['MUSC'].value_counts().head(10).sort_values(ascending=True)
@@ -93,7 +93,7 @@ st.pyplot(fig_bar)
 
 # --- GRAFICO LINEAL: Evolución mensual de lesiones ---
 st.markdown(
-    "<h3 style='text-align:center; text-decoration:underline;'>💊 EVOLUCIÓN MENSUAL DE LESIONES</h3>",
+    "<h3 style='text-align:center;color:#fff;'>💊 EVOLUCIÓN MENSUAL DE LESIONES</h3>",
     unsafe_allow_html=True
 )
 df_filtro['MES_AÑO'] = df_filtro['FECHA'].dt.to_period('M')
@@ -123,7 +123,7 @@ st.pyplot(fig_linea)
 # --- GRAFICO LINEAL: Días de baja ---
 if 'DAY_OFF_DXT' in df_filtro.columns:
     st.markdown(
-        "<h3 style='text-align:center; text-decoration:underline;'>👨‍⚕️ DÍAS DE BAJA POR LESIONES</h3>",
+        "<h3 style='text-align:center; color:#fff; '>👨‍⚕️ DÍAS DE BAJA POR LESIONES</h3>",
         unsafe_allow_html=True
     )
     days_off = df_filtro.groupby('MES_AÑO')['DAY_OFF_DXT'].sum()
